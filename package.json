@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "scripts": {
+    "scripts": {
+	"start": "node 6.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --ignore public",
     "1": "nodemon 1",

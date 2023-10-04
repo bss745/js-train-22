@@ -2,6 +2,15 @@
 // передані аргументи та вирішує який клас повинен мати об’єкт при створенні
 // Клас Book описує книгу в магазині
 class Book {
+  constructor({ title, author, coverColor }) {
+    this.title = title;
+    this.author = author;
+    this.coverColor = coverColor;
+  }
+
+  describe() {
+    return `"Книга: '${this.title}', автор: '${this.author}', колір обкладинки: '${this.coverColor}'"`;
+  }
   /**
    * Конструктор Book приймає об'єкт з параметрами
    * title - назва книги
@@ -18,6 +27,15 @@ class Book {
  * Клас AudioBook описує аудіокнигу в магазині
  */
 class AudioBook {
+  constructor({ title, author, audioLength }) {
+    this.title = title;
+    this.author = author;
+    this.audioLength = audioLength;
+  }
+
+  describe() {
+    return `"Аудіокнига: '${this.title}', автор: '${this.author}', тривалість: '${this.audioLength}'"`;
+  }
   /**
    * Конструктор AudioBook приймає об'єкт з параметрами
    * title - назва книги
@@ -35,11 +53,29 @@ class AudioBook {
  */
 
 class ProductFactory {
-  // TYPE - статична властивість, що визначає типи продуктів, які можуть бути створені.
-  // {
-  //   BOOK: "book",
-  //   AUDIOBOOK: "audiobook",
-  // }
+  //   TYPE - статична властивість, що визначає типи продуктів, які можуть бути створені.
+  static TYPE = {
+    BOOK: "book",
+    AUDIOBOOK: "audiobook",
+  };
+
+  static createProduct(type, options) {
+    switch (type) {
+      case this.TYPE.BOOK:
+        return new Book(options);
+      case this.TYPE.AUDIOBOOK:
+        return new AudioBook(options);
+      default:
+        throw new Error(`Такого типу продукту не існує: ${type}`);
+    }
+    // if (options.coverColor) {
+    //   return new Book(options);
+    // }
+
+    // if (options.audioLength) {
+    //   return new AudioBook(options);
+    // }
+  }
   /**
    * Статичний метод createProduct використовується для створення об'єктів-продуктів, отримує
    * type - тип продукту, що має бути створений. Має бути одним зі значень властивості TYPE.
@@ -54,32 +90,32 @@ console.log("Завдання 2 ====================================");
 // Після виконання розкоментуйте код нижче
 
 // Використовуємо ProductFactory для створення нової книги
-// const factoryBook = ProductFactory.createProduct(ProductFactory.TYPE.BOOK, {
-//   title: "Назва книги",
-//   author: "Автор книги",
-//   coverColor: "Синій",
-// });
+const factoryBook = ProductFactory.createProduct(ProductFactory.TYPE.BOOK, {
+  title: "Назва книги",
+  author: "Автор книги",
+  coverColor: "Синій",
+});
 
 // Виводимо в консоль опис нової книги
-// console.log(factoryBook.describe());
+console.log(factoryBook.describe());
 
 // Використовуємо ProductFactory для створення нової аудіокниги
-// const factoryAudiobook = ProductFactory.createProduct(
-//   ProductFactory.TYPE.AUDIOBOOK,
-//   {
-//     title: "Назва аудіокниги",
-//     author: "Автор аудіокниги ",
-//     audioLength: "5 годин",
-//   }
-// );
+const factoryAudiobook = ProductFactory.createProduct(
+  ProductFactory.TYPE.AUDIOBOOK,
+  {
+    title: "Назва аудіокниги",
+    author: "Автор аудіокниги ",
+    audioLength: "5 годин",
+  }
+);
 
 // Виводимо в консоль опис нової аудіокниги
-// console.log(factoryAudiobook.describe());
+console.log(factoryAudiobook.describe());
 
 // Спробуємо створити продукт непідтримуваного типу
-// try {
-//   const factoryUnknown = ProductFactory.createProduct("comics", {});
-// } catch (error) {
-//   // Виводимо помилку в консоль
-//   console.error(error.message);
-// }
+try {
+  const factoryUnknown = ProductFactory.createProduct("comics", {});
+} catch (error) {
+  // Виводимо помилку в консоль
+  console.error(error.message);
+}
